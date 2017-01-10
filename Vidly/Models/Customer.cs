@@ -13,6 +13,7 @@ namespace Vidly.Models
         [Required]
         [StringLength(255)]
         public string Name { get; set; }
+        [Display(Name = "Date of birth")]
         public DateTime? Birthdate { get; set; }
         public bool IsSubscribedToNewsletter { get; set; }
         public MemberShipType MemberShipType { get; set; }
