@@ -43,7 +43,34 @@ namespace Vidly.Controllers
 
         public ActionResult New()
         {
-            return View();
+            var viewModel = new CustomerFormViewModel()
+            {
+                MemberShipTypes = _dbContext.MemberShipTypes.ToList()
+            };
+
+            return View("CustomerForm",viewModel);
+        }
+
+        [HttpPost]
+        public ActionResult Create(Customer customer)
+        {
+            _dbContext.Customers.Add(customer);
+            _dbContext.SaveChanges();
+            return RedirectToAction("Index", "Customer");
+        }
+
+        public ActionResult Edit(int Id)
+        {
+            var customer = _dbContext.Customers.SingleOrDefault(c => c.Id == Id);
+            if (customer == null)
+                return HttpNotFound();
+
+            var viewModel = new CustomerFormViewModel()
+            {
+                Customer = customer,
+                MemberShipTypes = _dbContext.MemberShipTypes
+            };
+            return View("CustomerForm",viewModel);
         }
     }
 }
