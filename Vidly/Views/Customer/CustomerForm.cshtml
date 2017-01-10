@@ -5,7 +5,7 @@
 }
 
 <h2>New Customer</h2>
-@using (Html.BeginForm("Create", "Customer"))
+@using (Html.BeginForm("Save", "Customer"))
 {
     <div class="form-group">
         @Html.LabelFor(m => m.Customer.Name)
@@ -24,5 +24,6 @@
             @Html.CheckBoxFor(m => m.Customer.IsSubscribedToNewsletter) Subscribed to Newsletter?
         </label>
     </div>
+    @Html.HiddenFor(m => m.Customer.Id)
     <button class="btn btn-primary" type="submit">Save</button>
 }
