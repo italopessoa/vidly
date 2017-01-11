@@ -45,6 +45,7 @@ namespace Vidly.Controllers
         {
             var viewModel = new CustomerFormViewModel()
             {
+                Customer = new Customer(),//add value to the id hidden field, so I don't need [Bind(Exclude="Id")]
                 MemberShipTypes = _dbContext.MemberShipTypes.ToList()
             };
 
@@ -52,7 +53,7 @@ namespace Vidly.Controllers
         }
 
         [HttpPost]
-        public ActionResult Save([Bind(Exclude = "Id")] Customer customer)
+        public ActionResult Save(Customer customer)
         {
             if (!ModelState.IsValid)
             {

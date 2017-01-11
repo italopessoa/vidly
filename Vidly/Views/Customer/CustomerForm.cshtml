@@ -7,6 +7,7 @@
 <h2>New Customer</h2>
 @using (Html.BeginForm("Save", "Customer"))
 {
+    @Html.ValidationSummary(true,"Please fix the following erros.")
     <div class="form-group">
         @Html.LabelFor(m => m.Customer.Name)
         @Html.TextBoxFor(m => m.Customer.Name, new { @class = "form-control" })
@@ -29,4 +30,9 @@
     </div>
     @Html.HiddenFor(m => m.Customer.Id)
     <button class="btn btn-primary" type="submit">Save</button>
+}
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
 }
