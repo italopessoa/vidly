@@ -52,8 +52,18 @@ namespace Vidly.Controllers
         }
 
         [HttpPost]
-        public ActionResult Save(Customer customer)
+        public ActionResult Save([Bind(Exclude="Id")] Customer customer)
         {
+            if(!ModelState.IsValid)
+            {
+                var viewModel = new CustomerFormViewModel
+                {
+                    Customer = customer,
+                    MemberShipTypes = _dbContext.MemberShipTypes.ToList()
+                };
+
+                return View("CustomerForm", viewModel);
+            }
             if(customer.Id == 0)
                 _dbContext.Customers.Add(customer);
             else
@@ -67,7 +77,24 @@ namespace Vidly.Controllers
 
                 //TryUpdateModel(customerInDb);
             }
-            _dbContext.SaveChanges();
+                try
+                {
+
+                _dbContext.SaveChanges();
+                }
+                catch (System.Data.Entity.Validation.DbEntityValidationException ex)
+                {
+                    foreach (var eve in ex.EntityValidationErrors)
+                    {
+                        Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                            eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                        foreach (var ve in eve.ValidationErrors)
+                        {
+                            Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+                                ve.PropertyName, ve.ErrorMessage);
+                        }
+                    }
+                }
             return RedirectToAction("Index", "Customer");
         }
 
