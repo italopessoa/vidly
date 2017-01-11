@@ -48,10 +48,10 @@ namespace Vidly.Controllers
             return View(viewModel);
         }
 
-        public ActionResult Edit(int Id)
-        {
-            return Content("ID = " + Id);
-        }
+        //public ActionResult Edit(int Id)
+        //{
+        //    return Content("ID = " + Id);
+        //}
 
         public ActionResult Index(int? pageIndex, string sortBy)
         {
@@ -82,10 +82,70 @@ namespace Vidly.Controllers
 
         public ActionResult Details(int Id)
         {
-            var movie = _dbContext.Movies.Include(m=>m.Genre).SingleOrDefault(m => m.Id == Id);
+            var movie = _dbContext.Movies.Include(m => m.Genre).SingleOrDefault(m => m.Id == Id);
             if (movie != null)
                 return View(movie);
             else return HttpNotFound();
+        }
+
+        public ActionResult New()
+        {
+            MovieFormViewModel viewModel = new MovieFormViewModel()
+            {
+                Genres = _dbContext.Genres.ToList()
+            };
+            return View(viewModel);
+        }
+
+        public ActionResult Save(Movie movie)
+        {
+            if (movie.Id == 0)
+            {
+                movie.DateAdded = DateTime.Now;
+                _dbContext.Movies.Add(movie);
+            }
+            else
+            {
+                Movie movieInDb = _dbContext.Movies.Single(m => m.Id == movie.Id);
+                movieInDb.Name = movie.Name;
+                movieInDb.GenreId = movie.GenreId;
+                movieInDb.NumberInStock = movie.NumberInStock;
+                movieInDb.ReleaseDate = movie.ReleaseDate;
+            }
+
+            try
+            {
+
+                _dbContext.SaveChanges();
+            }
+            catch (System.Data.Entity.Validation.DbEntityValidationException ex)
+            {
+                foreach (var eve in ex.EntityValidationErrors)
+                {
+                    Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                        eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                    foreach (var ve in eve.ValidationErrors)
+                    {
+                        Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+                            ve.PropertyName, ve.ErrorMessage);
+                    }
+                }
+            }
+            return RedirectToAction("Lista", "Movies");
+        }
+
+        public ActionResult Edit(int Id)
+        {
+            var movie = _dbContext.Movies.SingleOrDefault(m => m.Id == Id);
+            if (movie == null)
+                return HttpNotFound();
+
+            MovieFormViewModel viewModel = new MovieFormViewModel()
+            {
+                Movie=movie,
+                Genres = _dbContext.Genres.ToList()
+            };
+            return View("New",viewModel);
         }
     }
 }

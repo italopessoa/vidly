@@ -12,6 +12,8 @@
 }
 else
 { 
+    @Html.ActionLink("New Movie", "New", "Movies", null, new {@class="btn btn-primary", style="margin: 0px 0px 10px 0px"})
+    
 <table class="table table-bordered table-hover" >
     <thead>
         <tr>
@@ -28,6 +30,9 @@ else
                 </td>
                 <td>
                     <p>@movie.Genre.Name</p>
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", "Movies", new { Id = movie.Id }, new { @class ="btn btn-warning"})
                 </td>
             </tr>
         }
