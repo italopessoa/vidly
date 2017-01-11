@@ -32,7 +32,7 @@ namespace Vidly.Controllers
 
         public ActionResult Detail(int Id)
         {
-            var customer = _dbContext.Customers.Include(c=> c.MemberShipType).SingleOrDefault(c => c.Id == Id);
+            var customer = _dbContext.Customers.Include(c => c.MemberShipType).SingleOrDefault(c => c.Id == Id);
             if (customer != null)
             {
                 return View(customer);
@@ -48,13 +48,13 @@ namespace Vidly.Controllers
                 MemberShipTypes = _dbContext.MemberShipTypes.ToList()
             };
 
-            return View("CustomerForm",viewModel);
+            return View("CustomerForm", viewModel);
         }
 
         [HttpPost]
-        public ActionResult Save([Bind(Exclude="Id")] Customer customer)
+        public ActionResult Save([Bind(Exclude = "Id")] Customer customer)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 var viewModel = new CustomerFormViewModel
                 {
@@ -64,7 +64,7 @@ namespace Vidly.Controllers
 
                 return View("CustomerForm", viewModel);
             }
-            if(customer.Id == 0)
+            if (customer.Id == 0)
                 _dbContext.Customers.Add(customer);
             else
             {
@@ -77,24 +77,7 @@ namespace Vidly.Controllers
 
                 //TryUpdateModel(customerInDb);
             }
-                try
-                {
-
-                _dbContext.SaveChanges();
-                }
-                catch (System.Data.Entity.Validation.DbEntityValidationException ex)
-                {
-                    foreach (var eve in ex.EntityValidationErrors)
-                    {
-                        Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
-                            eve.Entry.Entity.GetType().Name, eve.Entry.State);
-                        foreach (var ve in eve.ValidationErrors)
-                        {
-                            Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
-                                ve.PropertyName, ve.ErrorMessage);
-                        }
-                    }
-                }
+            _dbContext.SaveChanges();
             return RedirectToAction("Index", "Customer");
         }
 
@@ -109,7 +92,7 @@ namespace Vidly.Controllers
                 Customer = customer,
                 MemberShipTypes = _dbContext.MemberShipTypes
             };
-            return View("CustomerForm",viewModel);
+            return View("CustomerForm", viewModel);
         }
     }
 }
