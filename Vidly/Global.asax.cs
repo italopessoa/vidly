@@ -13,6 +13,7 @@ namespace Vidly
     {
         protected void Application_Start()
         {
+            AutoMapper.Mapper.Initialize(c => c.AddProfile<Vidly.App_Start.MappingProfile>());
             GlobalConfiguration.Configure(WebApiConfig.Register);
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
