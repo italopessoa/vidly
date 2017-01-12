@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -25,37 +26,61 @@ namespace Vidly.Controllers.Api
 
         [HttpGet]
         //GET /api/movies/1
-        public IEnumerable<CustomerDto> Movies()
+        public IEnumerable<MovieDto> Movies()
         {
-            throw new NotImplementedException();
+            return _dbContext.Movies.ToList().Select(Mapper.Map<Movie, MovieDto>);
         }
-        
+
         [HttpGet]
         //GET /api/movies/1
         public IHttpActionResult GetMovie(int id)
         {
-            throw new NotImplementedException();
+            var movieInDb = _dbContext.Movies.SingleOrDefault(m => m.Id == id);
+            if (movieInDb == null)
+                return NotFound();
+
+            return Ok(Mapper.Map<Movie, MovieDto>(movieInDb));
         }
 
         [HttpPost]
         //POST /api/movies
         public IHttpActionResult CreateMovie(MovieDto movieDto)
         {
-            throw new NotImplementedException();
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var movie = Mapper.Map<MovieDto, Movie>(movieDto);
+            _dbContext.Movies.Add(movie);
+            _dbContext.SaveChanges();
+            movieDto.Id = movie.Id;
+            return Created(new Uri(Request.RequestUri + "/" + movie.Id), movieDto);
         }
 
         [HttpPut]
         //PUT /api/movies/1
-        public void UpdateMovie(int id,MovieDto movieDto)
+        public void UpdateMovie(int id, MovieDto movieDto)
         {
-            throw new NotImplementedException();
+            if (!ModelState.IsValid)
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
+
+            var movieInDb = _dbContext.Movies.SingleOrDefault(m => m.Id == id);
+            if (movieInDb == null)
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+
+            Mapper.Map(movieDto, movieInDb);
+            _dbContext.SaveChanges();
         }
 
         [HttpDelete]
         //DELETE /api/movies/1
-        public void deleteMovie(int id)
+        public void DeleteMovie(int id)
         {
-            throw new NotImplementedException();
+            var movieInDb = _dbContext.Movies.SingleOrDefault(m => m.Id == id);
+            if (movieInDb == null)
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+
+            _dbContext.Movies.Remove(movieInDb);
+            _dbContext.SaveChanges();
         }
     }
 }
