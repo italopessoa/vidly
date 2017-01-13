@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Web.Http;
 using Vidly.Dtos;
 using Vidly.Models;
+using System.Data.Entity;
 
 namespace Vidly.Controllers.Api
 {
@@ -26,9 +27,21 @@ namespace Vidly.Controllers.Api
 
         [HttpGet]
         //GET /api/customers
-        public IEnumerable<CustomerDto> GetCustomers()
+        public IHttpActionResult GetCustomers()
         {
-            return _dbContext.Customers.ToList().Select(Mapper.Map<Customer, CustomerDto>);
+            var customersQuery = _dbContext.Customers.Include(c => c.MemberShipType);
+
+            //var customersDto = _dbContext.Customers
+            //    .Include(c => c.MemberShipType)
+            //    .ToList()
+            //    .Select(Mapper.Map<Customer, CustomerDto>);
+            var x = customersQuery.Count();
+            var customerDtos = customersQuery
+                .ToList()
+.Select(Mapper.Map<Customer, CustomerDto>);
+
+
+            return Ok(customerDtos);
         }
 
         [HttpGet]
@@ -38,7 +51,7 @@ namespace Vidly.Controllers.Api
             var customer = _dbContext.Customers.SingleOrDefault(c => c.Id == Id);
             if (customer == null)
                 return NotFound();
-                //throw new HttpResponseException(HttpStatusCode.NotFound);
+            //throw new HttpResponseException(HttpStatusCode.NotFound);
 
             return Ok(Mapper.Map<Customer, CustomerDto>(customer));
         }
@@ -49,8 +62,8 @@ namespace Vidly.Controllers.Api
         {
             if (!ModelState.IsValid)
                 return BadRequest();
-                //throw new HttpResponseException(HttpStatusCode.BadRequest);
-            
+            //throw new HttpResponseException(HttpStatusCode.BadRequest);
+
             var customer = Mapper.Map<CustomerDto, Customer>(customerDto);
             _dbContext.Customers.Add(customer);
             _dbContext.SaveChanges();

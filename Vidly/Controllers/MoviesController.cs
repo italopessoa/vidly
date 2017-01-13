@@ -71,13 +71,13 @@ namespace Vidly.Controllers
 
         public ActionResult Lista()
         {
-            var movies = _dbContext.Movies.Include(m => m.Genre).ToList();
+            //var movies = _dbContext.Movies.Include(m => m.Genre).ToList();
             //MoviesViewModel viewModel = new MoviesViewModel();
             //viewModel.Movies = new List<Movie>();
             //viewModel.Movies.Add(new Movie() { Name = "Shrek", Id = 1 });
             //viewModel.Movies.Add(new Movie() { Name = "Wall-e", Id = 2 });
 
-            return View(movies);
+            return View();
         }
 
         public ActionResult Details(int Id)
