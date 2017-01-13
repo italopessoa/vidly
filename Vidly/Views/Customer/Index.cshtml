@@ -7,12 +7,12 @@
 
 <h2>Customers</h2>
 @*@if (!Model.Any())
-{
-    <p>We don't have any customer yet.</p>
-}
-else
-{
-}*@
+    {
+        <p>We don't have any customer yet.</p>
+    }
+    else
+    {
+    }*@
 
 <table id="customers" class="table table-bordered table-hover">
     <thead>
@@ -24,13 +24,13 @@ else
     </thead>
     <tbody>
         @*foreach (var customer in Model)
-    {
-        <tr>
-            <td>@Html.ActionLink(customer.Name, "Edit", "Customer", new { id = customer.Id }, null)</td>
-            <td>@customer.MemberShipType.Name</td>
-            <td><button data-customer-id="@customer.Id" class="btn-link js-delete">Delete</button></td>
-        </tr>
-    }*@
+            {
+                <tr>
+                    <td>@Html.ActionLink(customer.Name, "Edit", "Customer", new { id = customer.Id }, null)</td>
+                    <td>@customer.MemberShipType.Name</td>
+                    <td><button data-customer-id="@customer.Id" class="btn-link js-delete">Delete</button></td>
+                </tr>
+            }*@
     </tbody>
 </table>
 @*<div class="list-group">
@@ -44,7 +44,7 @@ else
 {
     <script>
         $(document).ready(function () {
-            $("#customers").DataTable({
+            var table = $("#customers").DataTable({
                 ajax: {
                     url: "/api/customers",
                     dataSrc: ""
@@ -52,8 +52,8 @@ else
                 columns: [
                     {
                         data: "name",
-                        render: function (data,type,customer) {
-                            return "<a hre='/customer/edit/"+customer.id+"'>"+customer.name +"</a>"
+                        render: function (data, type, customer) {
+                            return "<a hre='/customer/edit/" + customer.id + "'>" + customer.name + "</a>"
                         }
                     },
                     {
@@ -62,12 +62,12 @@ else
                     {
                         data: "id",
                         render: function (data) {
-                            return "<button class='btn-link js-delete' data-customer-id='"+data+"'>Delete</button>"
+                            return "<button class='btn-link js-delete' data-customer-id='" + data + "'>Delete</button>"
                         }
                     }
                 ]
             });
-            
+
 
             $("#customers").on("click", ".js-delete", function () {
                 var button = $(this);
@@ -78,8 +78,7 @@ else
                             url: "/api/customers/" + button.attr("data-customer-id"),
                             method: "DELETE",
                             success: function () {
-                                console.log("Success")
-                                button.parents("tr").remove();
+                                table.row(button.parents("tr")).remove().draw();
                             }
                         });
                     }
