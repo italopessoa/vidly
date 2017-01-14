@@ -11,6 +11,7 @@ using System.Data.Entity;
 
 namespace Vidly.Controllers.Api
 {
+    
     public class CustomersController : ApiController
     {
         private ApplicationDbContext _dbContext;
@@ -38,8 +39,7 @@ namespace Vidly.Controllers.Api
             var x = customersQuery.Count();
             var customerDtos = customersQuery
                 .ToList()
-.Select(Mapper.Map<Customer, CustomerDto>);
-
+                .Select(Mapper.Map<Customer, CustomerDto>);
 
             return Ok(customerDtos);
         }
@@ -56,6 +56,7 @@ namespace Vidly.Controllers.Api
             return Ok(Mapper.Map<Customer, CustomerDto>(customer));
         }
 
+        [Authorize(Roles = RoleName.CanManageMovies)]
         [HttpPost]
         //POST /api/customers
         public IHttpActionResult CreateCustomer(CustomerDto customerDto)
@@ -72,6 +73,7 @@ namespace Vidly.Controllers.Api
             return Created(new Uri(Request.RequestUri + "/" + customer.Id), customerDto); //customerDto;
         }
 
+        [Authorize(Roles = RoleName.CanManageMovies)]
         [HttpPut]
         //PUT /api/customers/1
         public void UpdateCustomer(int id, CustomerDto customerDto)
@@ -92,6 +94,7 @@ namespace Vidly.Controllers.Api
             _dbContext.SaveChanges();
         }
 
+        [Authorize(Roles = RoleName.CanManageMovies)]
         [HttpDelete]
         //DELETE /api/customers/1
         public void DeleteCustomer(int Id)

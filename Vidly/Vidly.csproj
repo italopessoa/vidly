@@ -16,7 +16,7 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort />
+    <IISExpressSSLPort>44301</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -244,24 +244,39 @@
     <Compile Include="Migrations\201701100042156_AddMoviesProperties.Designer.cs">
       <DependentUpon>201701100042156_AddMoviesProperties.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201701131614411_SeedUsers.cs" />
+    <Compile Include="Migrations\201701131614411_SeedUsers.Designer.cs">
+      <DependentUpon>201701131614411_SeedUsers.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201701131655546_AddDriveLicenseToApplicationUser.cs" />
+    <Compile Include="Migrations\201701131655546_AddDriveLicenseToApplicationUser.Designer.cs">
+      <DependentUpon>201701131655546_AddDriveLicenseToApplicationUser.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\ApplicationDbContext.cs" />
+    <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Genre.cs" />
-    <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\IdentityModels.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MemberShipType.cs" />
     <Compile Include="Models\Min18YearIfAMemberAttribute.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Models\Movie.cs" />
+    <Compile Include="Models\RoleName.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\CustomerFormViewModel.cs" />
     <Compile Include="ViewModels\CustomerViewModel.cs" />
+    <Compile Include="ViewModels\ExternalLoginConfirmationViewModel.cs" />
     <Compile Include="ViewModels\MovieFormViewModel.cs" />
     <Compile Include="ViewModels\MoviesViewModel.cs" />
     <Compile Include="ViewModels\RandomMovieViewModel.cs" />
+    <Compile Include="ViewModels\RegisterViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-lumen.css" />
@@ -503,6 +518,7 @@
     <Content Include="Views\Movies\Details.cshtml" />
     <Content Include="Views\Customer\CustomerForm.cshtml" />
     <Content Include="Views\Movies\New.cshtml" />
+    <Content Include="Views\Movies\ReadOnlyLista.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -554,6 +570,12 @@
     <EmbeddedResource Include="Migrations\201701100042156_AddMoviesProperties.resx">
       <DependentUpon>201701100042156_AddMoviesProperties.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701131614411_SeedUsers.resx">
+      <DependentUpon>201701131614411_SeedUsers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701131655546_AddDriveLicenseToApplicationUser.resx">
+      <DependentUpon>201701131655546_AddDriveLicenseToApplicationUser.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -573,7 +595,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>25754</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:25754/</IISUrl>
+          <IISUrl>https://localhost:44301/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
