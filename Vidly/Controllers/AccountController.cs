@@ -152,7 +152,7 @@ namespace Vidly.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, DriveLicense = model.DriveLicense };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, DriveLicense = model.DriveLicense, PhoneNumber = model.Phone };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -373,7 +373,7 @@ namespace Vidly.Controllers
                 {
                     return View("ExternalLoginFailure");
                 }
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, DriveLicense = model.DrivingLicense };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, DriveLicense = model.DrivingLicense, PhoneNumber = model.Phone };
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {

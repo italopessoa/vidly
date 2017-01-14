@@ -13,6 +13,11 @@ namespace Vidly.Models
         [Display(Name = "Driving License")]
         public string DrivingLicense { get; set; }
 
+        [Required]
+        [StringLength(50, ErrorMessage = "Phone number is too long. Maximum 50 numbers.")]
+        //[Range(0,9)]
+        [Display(Name = "Phone")]
+        public string Phone { get; set; }
     }
 
     public class ExternalLoginListViewModel
@@ -72,6 +77,12 @@ namespace Vidly.Models
         [Required]
         [Display(Name = "Driving License")]
         public string DriveLicense { get; set; }
+
+        [Required]
+        //[Range(0, 9)]
+        [StringLength(50,ErrorMessage="Phone number is too long. Maximum 50 numbers.")]
+        [Display(Name = "Phone")]
+        public string Phone { get; set; }
 
         [Required]
         [EmailAddress]
