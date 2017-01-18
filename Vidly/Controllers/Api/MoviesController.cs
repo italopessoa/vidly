@@ -27,10 +27,17 @@ namespace Vidly.Controllers.Api
 
         [HttpGet]
         //GET /api/movies/1
-        public IHttpActionResult Movies()
+        public IHttpActionResult Movies(string query = null)
         {
-            var moviesDto = _dbContext.Movies
+
+            var moviesQuery = _dbContext.Movies
                 .Include(m => m.Genre)
+                .Where(m => m.NumberAvailable > 0);
+
+            if (!String.IsNullOrWhiteSpace(query))
+                moviesQuery = moviesQuery.Where(m => m.Name.Contains(query));
+
+            var moviesDto = moviesQuery
                 .ToList()
                 .Select(Mapper.Map<Movie, MovieDto>);
 
@@ -76,6 +83,7 @@ namespace Vidly.Controllers.Api
                 throw new HttpResponseException(HttpStatusCode.NotFound);
 
             Mapper.Map(movieDto, movieInDb);
+            movieInDb.NumberAvailable = movieDto.NumberInStock;
             _dbContext.SaveChanges();
         }
 
