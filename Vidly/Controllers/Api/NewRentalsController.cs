@@ -31,6 +31,7 @@ namespace Vidly.Controllers.Api
                         DateRented = DateTime.Now
                     };
                     dbContext.Rentals.Add(rental);
+                    movie.NumberAvailable--;
                 }
 
                 dbContext.SaveChanges();

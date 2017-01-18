@@ -76,6 +76,7 @@ namespace Vidly.Controllers.Api
                 throw new HttpResponseException(HttpStatusCode.NotFound);
 
             Mapper.Map(movieDto, movieInDb);
+            movieInDb.NumberAvailable = movieDto.NumberInStock;
             _dbContext.SaveChanges();
         }
 
