@@ -19,7 +19,7 @@ namespace Vidly.Controllers.Api
                 //if (newRental.MovieIds.Count == 0)
                 //    return BadRequest("No movie Ids have been giver.");
                 //defensive
-                
+
                 var customer = dbContext.Customers.Single(
                     c => c.Id == newRental.CustomerId);
 
@@ -51,8 +51,8 @@ namespace Vidly.Controllers.Api
                 }
 
                 dbContext.SaveChanges();
-                return Ok();
             }
+            return Ok();
         }
     }
 }
